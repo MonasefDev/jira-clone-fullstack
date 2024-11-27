@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const uploadRoute = require("./routes/upload");
 
@@ -10,9 +9,3 @@ app.get("/", (req, res) => {
 
 // Upload route
 app.use("/api", uploadRoute);
-
-const PORT = process.env.PORT || 6000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});

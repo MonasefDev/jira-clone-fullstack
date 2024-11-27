@@ -2,6 +2,11 @@
   "name": "jira-clone-fullstack",
   "version": "1.0.0",
   "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
     "start": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\"",
     "dev": "concurrently \"npm run server --prefix backend\" \"npm run client --prefix frontend\""
@@ -11,15 +16,6 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "concurrently": "^9.1.0",
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-next": "^15.0.3",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "prettier": "^3.3.3"
+    "concurrently": "^9.1.0"
   }
 }
