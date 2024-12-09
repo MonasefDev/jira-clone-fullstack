@@ -1,5 +1,5 @@
-const express = require("express");
-const upload = require("../uploadMiddleware");
+import express from "express";
+import upload from "../uploadMiddleware.js";
 
 const router = express.Router();
 // Image Upload Endpoint

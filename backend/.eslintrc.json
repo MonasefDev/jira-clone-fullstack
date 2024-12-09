@@ -1,0 +1,40 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2021, // Use modern JavaScript
+    "sourceType": "module" // Enable ES6 modules
+  },
+  "env": {
+    "node": true, // Define Node.js global variables and scope
+    "es2021": true // Enable ES2021 globals
+  },
+  "extends": ["airbnb", "prettier", "plugin:node/recommended"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "spaced-comment": "off",
+    "no-console": "warn",
+    "consistent-return": "off",
+    "func-names": "off",
+    "object-shorthand": "off",
+    "no-process-exit": "off",
+    "no-param-reassign": "off",
+    "no-return-await": "off",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off",
+    "node/no-unsupported-features/es-syntax": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "prefer-destructuring": ["error", { "object": true, "array": false }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "always", // Enforce using `.js` extensions
+        "jsx": "always",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  }
+}
