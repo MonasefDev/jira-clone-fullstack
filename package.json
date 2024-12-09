@@ -9,7 +9,9 @@
   ],
   "scripts": {
     "start": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\"",
-    "dev": "concurrently \"npm run server --prefix backend\" \"npm run client --prefix frontend\""
+    "dev": "concurrently \"npm run server --prefix backend\" \"npm run client --prefix frontend\"",
+    "client": "npm start --prefix frontend",
+    "server": "npm start --prefix backend"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +19,20 @@
   "description": "",
   "devDependencies": {
     "concurrently": "^9.1.0"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.61.5",
+    "@tanstack/react-table": "^8.20.5",
+    "axios": "^1.7.8",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.3",
+    "morgan": "^1.10.0",
+    "react-hot-toast": "^2.4.1",
+    "xss-clean": "^0.1.4"
   }
 }

@@ -1,9 +1,8 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const express = require("express");
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import app from "./app.js";
 
 dotenv.config({ path: "./config.env" });
-const app = express();
 
 app.get("/", (req, res) => {
   res.send("Hello, World! from nodemon");

@@ -6,6 +6,8 @@ import { FcGoogle } from "react-icons/fc";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import { DottedSeparator } from "@/components/DottedSeparator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,8 +20,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signupSchema } from "../schemas";
+import { useSignUp } from "../api/use-signup";
 
 export function SignUpCard() {
+  const { mutate: register, isPending: isRegistering } = useSignUp();
   const form = useForm({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -28,6 +32,11 @@ export function SignUpCard() {
       password: "",
     },
   });
+
+  const onSubmit = async (data) => {
+    register(data);
+  };
+
   return (
     <Card className="w-full h-full md:w-[487px] border-none shadow-none">
       <CardHeader className="flex items-center justify-center text-center p-7">
@@ -47,7 +56,7 @@ export function SignUpCard() {
       <CardContent className="p-7">
         {/* Form wrapper */}
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(() => {})} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Name Input */}
             <FormField
               control={form.control}
@@ -99,7 +108,12 @@ export function SignUpCard() {
             />
 
             {/* Submit Button */}
-            <Button type="submit" size="lg" className="w-full">
+            <Button
+              disabled={isRegistering}
+              type="submit"
+              size="lg"
+              className="w-full"
+            >
               Sign Up
             </Button>
           </form>

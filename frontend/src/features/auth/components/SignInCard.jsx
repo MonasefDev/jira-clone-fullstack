@@ -18,8 +18,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { loginSchema } from "../schemas";
+import { useSignIn } from "../api/use-signin";
 
 export function SignInCard() {
+  const { mutate: signIn, isPending: isSigningIn } = useSignIn();
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -27,6 +29,10 @@ export function SignInCard() {
       password: "",
     },
   });
+
+  const onSubmit = async (data) => {
+    signIn({ email: data.email, password: data.password });
+  };
 
   return (
     <Card className="w-full h-full md:w-[487px] border-none shadow-none">
@@ -40,7 +46,7 @@ export function SignInCard() {
         {/* Form Wrapper */}
         <Form {...form}>
           {/* Ensure form onSubmit is handled by handleSubmit */}
-          <form onSubmit={form.handleSubmit(() => {})} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Email Field */}
             <FormField
               name="email"
@@ -82,7 +88,12 @@ export function SignInCard() {
             />
 
             {/* Submit Button */}
-            <Button disabled={false} type="submit" size="lg" className="w-full">
+            <Button
+              disabled={isSigningIn}
+              type="submit"
+              size="lg"
+              className="w-full"
+            >
               Login
             </Button>
           </form>
