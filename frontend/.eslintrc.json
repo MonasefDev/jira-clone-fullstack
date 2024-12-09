@@ -25,6 +25,7 @@
     "import/no-named-as-default": "off",
     "import/no-cycle": "off",
     "object-curly-newline": "off",
+    "operator-linebreak": "off",
 
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "no-unused-vars": ["warn", { "argsIgnorePattern": "req|res|next|val" }]
