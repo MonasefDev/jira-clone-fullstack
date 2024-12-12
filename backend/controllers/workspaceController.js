@@ -73,12 +73,6 @@ export const updateWorkspace = catchAsync(async (req, res, next) => {
   const { workspaceId } = req.params;
   const { name, imageUrl } = req.body;
 
-  const elementToUpdate = imageUrl
-    ? { name, imageUrl }
-    : req.file
-      ? { name, imageUrl: req.file.path }
-      : { name };
-
   const existingWorkspace = await Workspace.findOne({
     _id: workspaceId,
     userId: req.user.id,
@@ -98,6 +92,12 @@ export const updateWorkspace = catchAsync(async (req, res, next) => {
       new AppError("You are not authorized to update this workspace.", 404),
     );
   }
+
+  const elementToUpdate = imageUrl
+    ? { name, imageUrl }
+    : req.file
+      ? { name, imageUrl: req.file.path }
+      : { name };
 
   const updatedWorkspace = await Workspace.findOneAndUpdate(
     { _id: workspaceId, userId: req.user.id },
