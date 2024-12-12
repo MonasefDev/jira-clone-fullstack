@@ -85,6 +85,11 @@ const sendErrorProd = (err, req, res) => {
 const errorController = (err, req, res, next) => {
   // console.log(err.stack);
 
+  // Ensure `err` is an object and not a string or other type
+  if (typeof err === "string") {
+    err = new Error(err);
+  }
+
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 

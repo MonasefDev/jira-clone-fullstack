@@ -30,6 +30,9 @@ export const useSignUp = () => {
       toast.success(`Welcome, ${user.name}! You are registered.`);
 
       // Redirect to the dashboard
+      router.push("/");
+
+      // Redirect to the dashboard
       queryClient.invalidateQueries({ queryKey: ["current-user"] });
     },
     onError: (err) => {
