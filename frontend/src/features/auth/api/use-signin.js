@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 
 export const useSignIn = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (data) => {
@@ -26,6 +28,9 @@ export const useSignIn = () => {
 
       // Display a welcome message
       toast.success(`Welcome, ${user.name}! You are signed in.`);
+
+      // Redirect to the dashboard
+      router.push("/");
 
       // Redirect to the dashboard
       queryClient.invalidateQueries({ queryKey: ["current-user"] });
