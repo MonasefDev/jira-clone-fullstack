@@ -11,6 +11,8 @@ import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoutes.js";
 import workspaceRouter from "./routes/workspaceRoutes.js";
 import memberRouter from "./routes/memberRouter.js";
+import projectRouter from "./routes/projectRouter.js";
+
 import AppError from "./utils/appError.js";
 import globalErrorHandler from "./controllers/errorController.js";
 
@@ -65,6 +67,7 @@ app.use(xss());
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/workspaces", workspaceRouter);
 app.use("/api/v1/members", memberRouter);
+app.use("/api/v1/projects", projectRouter);
 
 // Unhandled routes
 app.all("*", (req, res, next) => {
