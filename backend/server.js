@@ -12,6 +12,7 @@ import userRouter from "./routes/userRoutes.js";
 import workspaceRouter from "./routes/workspaceRoutes.js";
 import memberRouter from "./routes/memberRouter.js";
 import projectRouter from "./routes/projectRouter.js";
+import taskRouter from "./routes/tasksRouter.js";
 
 import AppError from "./utils/appError.js";
 import globalErrorHandler from "./controllers/errorController.js";
@@ -68,6 +69,7 @@ app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/workspaces", workspaceRouter);
 app.use("/api/v1/members", memberRouter);
 app.use("/api/v1/projects", projectRouter);
+app.use("/api/v1/tasks", taskRouter);
 
 // Unhandled routes
 app.all("*", (req, res, next) => {
