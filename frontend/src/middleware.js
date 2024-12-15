@@ -30,9 +30,6 @@ export async function middleware(req) {
     // Verify the token using jose
     const secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
     const { payload } = await jwtVerify(token.value, secret);
-
-    // Optionally, add user data to the request for use in protected pages
-    req.user = payload;
   } catch (error) {
     console.error("Token verification failed:", error);
     return NextResponse.redirect(new URL("/sign-in", req.url));
