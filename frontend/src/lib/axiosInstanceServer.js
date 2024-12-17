@@ -1,7 +1,7 @@
 import axios from "axios";
-import Cookies from "js-cookie";
+import { cookies } from "next/headers";
 
-const axiosInstance = axios.create({
+const axiosInstanceServer = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL, // Base URL for your backend
   headers: {
     "Content-Type": "application/json",
@@ -9,9 +9,10 @@ const axiosInstance = axios.create({
 });
 
 // Add a request interceptor to include the token
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = Cookies.get("jira-token"); // Retrieve the token from cookies
+axiosInstanceServer.interceptors.request.use(
+  async (config) => {
+    const cookieStore = await cookies(); // Must be awaited dynamically
+    const token = cookieStore.get("jira-token")?.value;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`; // Add the token to the Authorization header
     }
@@ -20,4 +21,4 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export default axiosInstance;
+export default axiosInstanceServer;

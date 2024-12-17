@@ -1,7 +1,7 @@
 import { SignUpCard } from "@/features/auth/components/SignUpCard";
 
-const SingInPage = async () => {
+function SingInPage() {
   return <SignUpCard />;
-};
+}
 
 export default SingInPage;

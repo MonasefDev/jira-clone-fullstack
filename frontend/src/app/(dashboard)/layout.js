@@ -1,13 +1,21 @@
+import { Navbar } from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
+import { CreateWorkspaceModal } from "@/features/workspaces/components/CreateWorkspaceModal";
+import { Suspense } from "react";
+
 function DashboardLayout({ children }) {
   return (
     <div className="min-h-screen">
+      <Suspense fallback={null}>
+        <CreateWorkspaceModal />
+      </Suspense>
       <div className="flex w-full h-full">
         <div className="fixed bg-slate-600 top-0 left-0 lg:w-[264px] hidden lg:block h-full overflow-auto">
-          Sidebar
+          <Sidebar />
         </div>
         <div className="lg:pl-[264px] w-full">
           <div className="mx-auto max-w-screen-2xl h-full">
-            Navbar
+            <Navbar />
             <main className="h-full py-8 px-6 flex flex-col">{children}</main>
           </div>
         </div>

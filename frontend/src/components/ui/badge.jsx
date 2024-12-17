@@ -1,6 +1,6 @@
-import { TaskStatus } from "@/features/tasks/types";
-import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+import { TaskStatus } from "@/features/tasks/types";
 
 const badgeVariants = cva(
   "inline-flex gap-2 items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",

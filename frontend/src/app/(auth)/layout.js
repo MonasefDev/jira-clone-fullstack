@@ -15,7 +15,13 @@ function AuthLayout({ children }) {
       <div className="mx-auto max-w-screen-2xl p-4">
         <nav className="flex justify-between items-center">
           <Link href="/">
-            <Image src="/logo.svg" alt="logo" height={40} width={100} />
+            <Image
+              src="/logo.svg"
+              alt="logo"
+              layout="intrinsic"
+              height={40}
+              width={100}
+            />
           </Link>
           <Button variant="secondary">
             {isSingIn ? (

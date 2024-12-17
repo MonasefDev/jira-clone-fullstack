@@ -1,4 +1,5 @@
 "use client";
+
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
@@ -10,13 +11,13 @@ const Form = FormProvider;
 
 const FormFieldContext = React.createContext({});
 
-const FormField = ({ ...props }) => {
+function FormField({ ...props }) {
   return (
     <FormFieldContext.Provider value={{ name: props.name }}>
       <Controller {...props} />
     </FormFieldContext.Provider>
   );
-};
+}
 
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext);

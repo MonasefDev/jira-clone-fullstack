@@ -55,8 +55,6 @@ const login = catchAsync(async (req, res, next) => {
   // 2) Check if user exists && password is correct
   const user = await User.findOne({ email }).select("+password");
 
-  console.log("user", user);
-
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect email or password", 401));
   }
@@ -65,4 +63,56 @@ const login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-export { signup, login };
+const getCurrentUser = catchAsync(async (req, res, next) => {
+  // 1) Get token from cookies or authorization header
+  let token;
+  if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  } else if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+
+  if (!token) {
+    return next(
+      new AppError("You are not logged in! Please log in to get access.", 401),
+    );
+  }
+
+  // 2) Verify the token
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  // 3) Fetch the user
+  const currentUser = await User.findById(decoded.id);
+
+  if (!currentUser) {
+    return next(
+      new AppError(
+        "The user belonging to this token does no longer exist.",
+        401,
+      ),
+    );
+  }
+
+  // 4) Return the user
+  res.status(200).json({
+    status: "success",
+    user: currentUser,
+  });
+});
+
+const logout = catchAsync(async (req, res, next) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(0), // Set the cookie to expire immediately
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Logged out successfully!",
+  });
+});
+
+export { signup, login, getCurrentUser, logout };

@@ -23,10 +23,7 @@ export const getAllWorkspaces = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      members: members,
-      workspaces: workspaces,
-    },
+    workspaces,
   });
 });
 
@@ -60,12 +57,9 @@ export const createWorkspace = catchAsync(async (req, res, next) => {
     return next(new AppError("Member creation failed.", 400));
   }
 
-  res.status(201).json({
+  res.status(200).json({
     status: "success",
-    data: {
-      workspace: newWorkspace,
-      member: newMember,
-    },
+    workspace: newWorkspace,
   });
 });
 
