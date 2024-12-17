@@ -1,10 +1,10 @@
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { cn } from "../lib/utils";
-import { QueryProvider } from "../components/TanstackProvider";
 
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import { QueryProvider } from "@/components/TanstackProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

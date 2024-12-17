@@ -4,3 +4,4 @@ backend/node_modules/
 
 # Exclude root node_modules if applicable
 node_modules/
+frontend v1
