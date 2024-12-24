@@ -1,5 +1,7 @@
 import Member from "../models/memberModel.js";
+import Project from "../models/projectModel.js";
 import Task from "../models/taskModel.js";
+import { User } from "../models/userModel.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 
@@ -7,6 +9,7 @@ export const getAllTasks = catchAsync(async (req, res, next) => {
   const { workspaceId, projectId, assigneeId, status, search, dueDate } =
     req.query;
 
+  // Check if the current user is a member of the workspace
   const currentMember = await Member.findOne({
     workspaceId,
     userId: req.user.id,
@@ -16,9 +19,8 @@ export const getAllTasks = catchAsync(async (req, res, next) => {
     return next(new AppError("You are not a member of this workspace.", 404));
   }
 
-  const query = {
-    workspaceId,
-  };
+  // Build the query
+  const query = { workspaceId };
 
   if (projectId) {
     query.projectId = projectId;
@@ -40,25 +42,104 @@ export const getAllTasks = catchAsync(async (req, res, next) => {
     query.dueDate = dueDate;
   }
 
+  // Fetch tasks based on the query
   const tasks = await Task.find(query);
 
-  if (!tasks) {
-    return next(new AppError("No tasks found.", 404));
-  }
+  // if (!tasks.length) {
+  //   return next(new AppError("No tasks found.", 404));
+  // }
 
+  // Extract project and assignee IDs from tasks
+  const projectIds = tasks.map((task) => task.projectId);
+  const assigneeIds = tasks.map((task) => task.assigneeId);
+
+  // Fetch related projects and members
+  const projectsOrigin = await Project.find({
+    _id: { $in: projectIds.length > 0 ? projectIds : [] },
+  });
+
+  const projects = projectsOrigin.map((project) => ({
+    id: project._id,
+    name: project.name,
+    workspaceId: project.workspaceId,
+    imageUrl: project.imageUrl,
+  }));
+  const membersOrigin = await Member.find({
+    _id: { $in: assigneeIds.length > 0 ? assigneeIds : [] },
+  });
+
+  const members = membersOrigin.map((member) => ({
+    id: member._id,
+    role: member.role,
+    workspaceId: member.workspaceId,
+    userId: member.userId,
+  }));
+
+  // Populate assignee details with user data
+  const assignees = await Promise.all(
+    members.map(async (member) => {
+      const user = await User.findById(member.userId); // Fetch user details
+      return {
+        ...member,
+        name: user.name,
+        email: user.email,
+      };
+    }),
+  );
+
+  // Populate project details
+  const populatedTasks = tasks.map((task) => {
+    const project = projects.filter(
+      (el) => el.id.toString() === task.projectId.toString(),
+    );
+    const assignee = assignees.filter(
+      (el) => el.id.toString() === task.assigneeId.toString(),
+    );
+
+    return {
+      id: task._id,
+      name: task.name,
+      description: task.description,
+      dueDate: task.dueDate,
+      status: task.status,
+      position: task.position,
+      projectId: task.projectId,
+      assigneeId: task.assigneeId,
+      project: project.length > 0 ? project[0] : null,
+      assignee: assignee.length > 0 ? assignee[0] : null,
+    };
+  });
+
+  // Return the populated tasks
   res.status(200).json({
     status: "success",
-    data: {
-      tasks: tasks,
-    },
+    tasks: populatedTasks,
   });
 });
 
 export const getTask = catchAsync(async (req, res, next) => {
   const { taskId } = req.params;
 
+  const taskOrigin = await Task.findById(taskId);
+
+  if (!taskOrigin) {
+    return next(new AppError("Task not found.", 404));
+  }
+
+  const task = {
+    id: taskOrigin._id,
+    name: taskOrigin.name,
+    description: taskOrigin.description,
+    dueDate: taskOrigin.dueDate,
+    status: taskOrigin.status,
+    workspaceId: taskOrigin.workspaceId,
+    position: taskOrigin.position,
+    projectId: taskOrigin.projectId,
+    assigneeId: taskOrigin.assigneeId,
+  };
+
   const currentMember = await Member.findOne({
-    workspaceId: req.body.workspaceId,
+    workspaceId: task.workspaceId,
     userId: req.user.id,
   });
 
@@ -66,16 +147,44 @@ export const getTask = catchAsync(async (req, res, next) => {
     return next(new AppError("You are not a member of this workspace.", 404));
   }
 
-  const task = await Task.findById(taskId);
+  const project = await Project.findById(task.projectId);
 
-  if (!task) {
-    return next(new AppError("Task not found.", 404));
+  if (!project) {
+    return next(new AppError("Project not found.", 404));
   }
+
+  const memberOfTask = await Member.findById(task.assigneeId);
+
+  if (!memberOfTask) {
+    return next(new AppError("Assignee not found.", 404));
+  }
+
+  const userOfAssignee = await User.findById(memberOfTask.userId);
+
+  if (!userOfAssignee) {
+    return next(new AppError("User not found.", 404));
+  }
+
+  const assignee = {
+    id: memberOfTask._id,
+    role: memberOfTask.role,
+    workspaceId: memberOfTask.workspaceId,
+    userId: memberOfTask.userId,
+    name: userOfAssignee.name,
+    email: userOfAssignee.email,
+  };
 
   res.status(200).json({
     status: "success",
-    data: {
-      task: task,
+    task: {
+      ...task,
+      project: {
+        id: project._id,
+        name: project.name,
+        workspaceId: project.workspaceId,
+        imageUrl: project.imageUrl,
+      },
+      assignee,
     },
   });
 });
@@ -204,9 +313,7 @@ export const updateTask = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: updatedTask,
-    },
+    task: updatedTask,
   });
 });
 

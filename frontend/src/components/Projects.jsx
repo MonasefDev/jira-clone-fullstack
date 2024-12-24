@@ -12,12 +12,16 @@ import { Loader } from "lucide-react";
 
 const Projects = () => {
   const { workspaceId } = useParams();
+  const pathname = usePathname();
+
+  const { open } = useCreateProjectModal();
   const { data: projects, isLoading } = useGetProjects({
     workspaceId,
+    enabled: !!workspaceId, // Only fetch projects if workspaceId is defined
   });
 
-  const pathname = usePathname();
-  const { open } = useCreateProjectModal();
+  if (!workspaceId)
+    return <div className="text-neutral-500 py-1 px-2">No projects found</div>;
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -38,7 +42,7 @@ const Projects = () => {
         <div className="text-neutral-500 py-1 px-2">No projects found</div>
       ) : (
         projects?.map((project) => {
-          const href = `/workspaces/${workspaceId}/projects/${project.id}/settings`;
+          const href = `/workspaces/${workspaceId}/projects/${project.id}`;
           const isActive = pathname === href;
 
           return (

@@ -7,7 +7,8 @@ const ProjectIdSettingsPage = async ({ params }) => {
     projectId,
   });
 
-  // if (!initialValues) throw new Error("Project not found");
+  if (!initialValues) throw new Error("Project not found");
+
   return (
     <div className="w-full lg:max-w-2xl">
       <EditProjectForm initialValues={initialValues} />

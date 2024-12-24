@@ -4,14 +4,12 @@ import Link from "next/link";
 
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar";
 import { getProjectById } from "@/features/projects/queries";
-// import { TaskViewSwitcher } from "@/features/tasks/components/TasksViewSwitcher";
-
-// import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
+import { TaskViewSwitcher } from "@/features/tasks/components/TasksViewSwitcher";
 
 const ProjectIdPage = async ({ params }) => {
-  const initialValues = await getProjectById({
-    projectId: params.projectId,
-  });
+  const { projectId } = await params;
+
+  const initialValues = await getProjectById({ projectId });
 
   if (!initialValues) {
     throw new Error("Project not found");
@@ -29,7 +27,7 @@ const ProjectIdPage = async ({ params }) => {
         <div>
           <Button variant="secondary" size="sm" asChild>
             <Link
-              href={`/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}/settings`}
+              href={`/workspaces/${initialValues.workspaceId}/projects/${initialValues.id}/settings`}
             >
               <Pencil1Icon className="size-4 mr-2" />
               Edit Project
@@ -37,7 +35,7 @@ const ProjectIdPage = async ({ params }) => {
           </Button>
         </div>
       </div>
-      {/* <TaskViewSwitcher /> */}
+      <TaskViewSwitcher />
     </div>
   );
 };

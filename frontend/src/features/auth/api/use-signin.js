@@ -35,8 +35,8 @@ export const useSignIn = () => {
       // Redirect to the dashboard
       queryClient.invalidateQueries({ queryKey: ["current-user"] });
     },
-    onError: (err) => {
-      toast.error(err.message);
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "Failed to log in");
     },
   });
   return mutation;

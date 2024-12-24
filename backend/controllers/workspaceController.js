@@ -27,6 +27,72 @@ export const getAllWorkspaces = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getWorkspace = catchAsync(async (req, res, next) => {
+  const { workspaceId } = req.params;
+
+  const member = await Member.findOne({
+    workspaceId: workspaceId,
+    userId: req.user.id,
+  });
+
+  if (!member || member.role !== "ADMIN") {
+    return next(
+      new AppError("You are not authorized to update this workspace.", 404),
+    );
+  }
+
+  const workspace = await Workspace.findById(workspaceId);
+
+  if (!workspace) {
+    return next(new AppError("Workspace not found.", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    workspace,
+  });
+});
+
+export const joinWorkspace = catchAsync(async (req, res, next) => {
+  const { workspaceId } = req.params;
+  const { inviteCode } = req.body;
+
+  const workspace = await Workspace.findOne({
+    _id: workspaceId,
+    inviteCode,
+  });
+
+  if (!workspace) {
+    return next(new AppError("Invalid invite code.", 400));
+  }
+
+  const member = await Member.findOne({
+    userId: req.user.id,
+    workspaceId,
+  });
+
+  if (member) {
+    return next(
+      new AppError("You are already a member of this workspace.", 400),
+    );
+  }
+
+  const newMember = await Member.create({
+    userId: req.user.id,
+    workspaceId,
+    role: "USER",
+  });
+
+  if (!newMember) {
+    return next(new AppError("Member join failed.", 400));
+  }
+
+  res.status(200).json({
+    status: "success",
+    workspace,
+  });
+});
+
 export const createWorkspace = catchAsync(async (req, res, next) => {
   const { name } = req.body;
 

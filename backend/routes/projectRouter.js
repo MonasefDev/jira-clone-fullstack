@@ -5,6 +5,7 @@ import {
   getAllProjectsOfWorkspace,
   updateProject,
   deleteProject,
+  getProjectById,
 } from "../controllers/projectController.js";
 import upload from "../middleware/uploadMiddleware.js";
 
@@ -20,6 +21,7 @@ router
 
 router
   .route("/:projectId")
+  .get(getProjectById)
   .patch(upload.single("image"), updateProject)
   .delete(deleteProject);
 

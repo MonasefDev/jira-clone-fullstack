@@ -23,9 +23,33 @@ export const getAllProjectsOfWorkspace = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      projects: projects,
-    },
+    projects,
+  });
+});
+
+export const getProjectById = catchAsync(async (req, res, next) => {
+  const { projectId } = req.params;
+
+  const project = await Project.findById({
+    _id: projectId,
+  });
+
+  if (!project) {
+    return next(new AppError("Project not found.", 404));
+  }
+
+  const currentMember = await Member.findOne({
+    workspaceId: project.workspaceId,
+    userId: req.user.id,
+  });
+
+  if (!currentMember) {
+    return next(new AppError("You are not a member of this workspace.", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    project,
   });
 });
 
@@ -50,9 +74,7 @@ export const createProject = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      data: newProject,
-    },
+    project: newProject,
   });
 });
 

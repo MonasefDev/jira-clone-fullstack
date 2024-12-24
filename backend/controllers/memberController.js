@@ -15,19 +15,19 @@ export const getAllMembersOfWorkspace = catchAsync(async (req, res, next) => {
     members.map(async (member) => {
       const user = await User.findById(member.userId);
       return {
-        id: user._id,
+        id: member._id,
+        role: member.role,
+        workspaceId: member.workspaceId,
+        userId: member.userId,
         name: user.name,
         email: user.email,
-        role: member.role,
       };
     }),
   );
 
   res.status(200).json({
     status: "success",
-    data: {
-      members: populatedMembers,
-    },
+    members: populatedMembers,
   });
 });
 
@@ -84,10 +84,12 @@ export const deleteMember = catchAsync(async (req, res, next) => {
 export const updateMemberRole = catchAsync(async (req, res, next) => {
   const { memberId } = req.params;
   const { role } = req.body;
-
+  console.log(memberId);
   const memberToUpdate = await Member.findById({
     _id: memberId,
   });
+
+  console.log(memberToUpdate);
 
   if (!memberToUpdate) {
     return next(new AppError("Member not found.", 404));
@@ -112,9 +114,9 @@ export const updateMemberRole = catchAsync(async (req, res, next) => {
     workspaceId: memberToUpdate.workspaceId,
   });
 
-  if (role !== "ADMIN" && role !== "USER") {
-    return next(new AppError("Invalid role.", 400));
-  }
+  // if (role !== "ADMIN" && role !== "USER") {
+  //   return next(new AppError("Invalid role.", 400));
+  // }
 
   if (memberToUpdate.role === role) {
     return next(new AppError(`Member already has ${role} role.`, 400));

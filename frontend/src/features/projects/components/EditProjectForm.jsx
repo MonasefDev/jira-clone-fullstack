@@ -26,8 +26,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useUpdateProject } from "../api/use-update-project";
 import { useDeleteProject } from "../api/use-delete-project";
 
-export const EditProjectForm = ({ onCancel, initialValues }) => {
-  console.log("initialValues", initialValues);
+export const EditProjectForm = ({ initialValues }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { mutate: updateProject, isPending: isUpdatingProject } =
@@ -76,6 +75,12 @@ export const EditProjectForm = ({ onCancel, initialValues }) => {
     );
   };
 
+  const onCancel = () => {
+    router.push(
+      `/workspaces/${initialValues.workspaceId}/projects/${initialValues.id}`
+    );
+  };
+
   const onSubmit = (data) => {
     if (
       initialValues.name === data.name &&
@@ -93,7 +98,7 @@ export const EditProjectForm = ({ onCancel, initialValues }) => {
       {
         onSuccess: () => {
           form.reset();
-          onCancel?.();
+          onCancel();
           queryClient.invalidateQueries(["projects"]);
           queryClient.invalidateQueries(["project", initialValues.id]);
         },

@@ -45,6 +45,7 @@ taskSchema.set("toJSON", {
     ret.id = ret._id; // Rename _id to id
     delete ret._id; // Remove _id field
     delete ret.__v; // Remove __v field
+    return ret;
   },
 });
 
