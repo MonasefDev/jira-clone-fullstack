@@ -6,14 +6,18 @@ export const useBulkUpdateTask = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async ({ json }) => {
-      const response = await axiosInstance.post("/tasks/bulk-update", json);
+    mutationFn: async ({ tasks: data }) => {
+      const response = await axiosInstance.patch("/tasks/bulk-update", {
+        tasks: data,
+      });
 
-      if (!response?.data?.success) {
-        throw new Error(response?.data?.message || "Failed to update tasks");
+      console.log(response);
+
+      if (!response?.data) {
+        throw new Error("Failed to update tasks");
       }
-
-      return response.data.data; // Return the updated task data
+      const { tasks } = response?.data;
+      return tasks; // Return the updated task data
     },
     onSuccess: (data) => {
       // Invalidate tasks cache to ensure updated tasks are reflected in the UI

@@ -1,6 +1,6 @@
 import { MoreHorizontal } from "lucide-react";
 
-import { DottedSeparator } from "@/components/dotted-separator";
+import { DottedSeparator } from "@/components/DottedSeparator";
 import { MemberAvatar } from "@/features/members/components/MemberAvatar";
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar";
 

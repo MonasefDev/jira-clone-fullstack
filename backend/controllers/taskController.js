@@ -237,9 +237,7 @@ export const createTask = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: {
-      data: newTask,
-    },
+    task: newTask,
   });
 });
 
@@ -303,7 +301,15 @@ export const updateTask = catchAsync(async (req, res, next) => {
 
   const updatedTask = await Task.findOneAndUpdate(
     { _id: taskId },
-    { name, description, dueDate, status, projectId, assigneeId },
+    {
+      name,
+      description,
+      dueDate,
+      status,
+      projectId,
+      assigneeId,
+      updatedAt: Date.now(),
+    },
     { new: true },
   );
 
@@ -320,11 +326,16 @@ export const updateTask = catchAsync(async (req, res, next) => {
 export const updateBulkTasks = catchAsync(async (req, res, next) => {
   const { tasks } = req.body;
 
-  const tasksToUpdate = tasks.map((task) => Task.findById(task.id));
+  // console.log(tasks);
 
-  const workspaceIds = tasksToUpdate.map((task) => task.workspaceId);
+  const tasksToUpdate = await Promise.all(
+    tasks.map(async (task) => await Task.findById(task.id)),
+  );
 
-  if (workspaceIds.length !== 1) {
+  const workspaceIds = tasksToUpdate.map((task) => task.workspaceId.toString());
+  const allSameWorkspaceId = new Set(workspaceIds).size === 1;
+
+  if (!allSameWorkspaceId) {
     return next(
       new AppError("All task must be belong to the same workspace id", 400),
     );
@@ -342,7 +353,7 @@ export const updateBulkTasks = catchAsync(async (req, res, next) => {
   }
 
   const updatedTasks = await Promise.all(
-    tasksToUpdate.map(async (task) => {
+    tasks.map(async (task) => {
       const { id, status, position } = task;
       const updatedTask = await Task.findOneAndUpdate(
         { _id: id },
@@ -359,8 +370,6 @@ export const updateBulkTasks = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: updatedTasks,
-    },
+    tasks: updatedTasks,
   });
 });

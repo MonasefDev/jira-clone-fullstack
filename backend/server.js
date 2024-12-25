@@ -16,6 +16,8 @@ import taskRouter from "./routes/tasksRouter.js";
 
 import AppError from "./utils/appError.js";
 import globalErrorHandler from "./controllers/errorController.js";
+import { updateBulkTasks } from "./controllers/taskController.js";
+import { protectMiddleware } from "./middleware/protectMiddleware.js";
 
 dotenv.config();
 
@@ -69,6 +71,7 @@ app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/workspaces", workspaceRouter);
 app.use("/api/v1/members", memberRouter);
 app.use("/api/v1/projects", projectRouter);
+app.use("/api/v1/tasks/bulk-update", protectMiddleware, updateBulkTasks);
 app.use("/api/v1/tasks", taskRouter);
 
 // Unhandled routes

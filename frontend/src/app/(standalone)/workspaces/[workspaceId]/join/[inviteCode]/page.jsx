@@ -5,11 +5,9 @@ import { redirect } from "next/navigation";
 
 const WorkspaceIdJoinPage = async ({ params }) => {
   const { workspaceId } = await params;
-  console.log("workspaceId", workspaceId);
   const data = await getWorkspaceById({
     workspaceId,
   });
-  console.log("data", data);
   if (!data) redirect("/");
 
   const initialValues = data;

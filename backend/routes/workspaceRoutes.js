@@ -7,6 +7,7 @@ import {
   resetInviteCodeWorkspace,
   getWorkspace,
   joinWorkspace,
+  getWorkspaceAnalytics,
 } from "../controllers/workspaceController.js";
 import upload from "../middleware/uploadMiddleware.js";
 import { protectMiddleware } from "../middleware/protectMiddleware.js";
@@ -29,5 +30,7 @@ router
 router.post("/:workspaceId/join", joinWorkspace);
 
 router.patch("/:workspaceId/reset-invite-code", resetInviteCodeWorkspace);
+
+router.get("/:workspaceId/analytics", getWorkspaceAnalytics);
 
 export default router;

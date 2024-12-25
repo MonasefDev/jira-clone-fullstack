@@ -1,8 +1,10 @@
+import { endOfMonth, startOfMonth, subMonths } from "date-fns";
 import Member from "../models/memberModel.js";
 import Workspace from "../models/workspaceModel.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 import { generateInviteCode } from "../utils/helpers.js";
+import Task from "../models/taskModel.js";
 
 export const getAllWorkspaces = catchAsync(async (req, res, next) => {
   const members = await Member.find({ userId: req.user.id });
@@ -254,6 +256,154 @@ export const resetInviteCodeWorkspace = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       workspace: updatedWorkspace,
+    },
+  });
+});
+
+export const getWorkspaceAnalytics = catchAsync(async (req, res, next) => {
+  const { workspaceId } = req.params;
+
+  const member = await Member.findOne({
+    workspaceId: workspaceId,
+    userId: req.user.id,
+  });
+
+  if (!member || member.role !== "ADMIN") {
+    return next(
+      new AppError("You are not authorized to update this workspace.", 404),
+    );
+  }
+
+  const tasks = await Task.find({ workspaceId: workspaceId });
+  console.log("Tasks", tasks);
+
+  const now = new Date();
+  const thisMonthStart = startOfMonth(now);
+  const thisMonthEnd = endOfMonth(now);
+  const lastMonthStart = startOfMonth(subMonths(now, 1));
+  const lastMonthEnd = endOfMonth(subMonths(now, 1));
+
+  const thisMonthTasks = await Task.find({
+    workspaceId: workspaceId,
+    createdAt: {
+      $gte: thisMonthStart.toISOString(),
+      $lte: thisMonthEnd.toISOString(),
+    },
+  });
+
+  const lastMonthTasks = await Task.find({
+    workspaceId: workspaceId,
+    createdAt: {
+      $gte: lastMonthStart.toISOString(),
+      $lte: lastMonthEnd.toISOString(),
+    },
+  });
+
+  const taskCount = thisMonthTasks.length;
+  const taskDifference = taskCount - lastMonthTasks.length;
+
+  const thisMonthAssignedTasks = await Task.find({
+    workspaceId: workspaceId,
+    assigneeId: member._id,
+    createdAt: {
+      $gte: thisMonthStart.toISOString(),
+      $lte: thisMonthEnd.toISOString(),
+    },
+  });
+
+  const lastMonthAssignedTasks = await Task.find({
+    workspaceId: workspaceId,
+    assigneeId: member._id,
+    createdAt: {
+      $gte: lastMonthStart.toISOString(),
+      $lte: lastMonthEnd.toISOString(),
+    },
+  });
+
+  const assignedTaskCount = thisMonthAssignedTasks.length;
+  const assignedTaskDifference =
+    assignedTaskCount - lastMonthAssignedTasks.length;
+
+  const thisMonthIncompleteTasks = await Task.find({
+    workspaceId: workspaceId,
+    status: { $ne: "DONE" }, // Exclude tasks with status "DONE"
+    createdAt: {
+      $gte: thisMonthStart.toISOString(),
+      $lte: thisMonthEnd.toISOString(),
+    },
+  });
+
+  const lastMonthIncompleteTasks = await Task.find({
+    workspaceId: workspaceId,
+    status: { $ne: "DONE" }, // Exclude tasks with status "DONE"
+    createdAt: {
+      $gte: lastMonthStart.toISOString(),
+      $lte: lastMonthEnd.toISOString(),
+    },
+  });
+
+  const incompleteTaskCount = thisMonthIncompleteTasks.length;
+  const incompleteTaskDifference =
+    incompleteTaskCount - lastMonthIncompleteTasks.length;
+
+  const thisMonthCompletedTasks = await Task.find({
+    workspaceId: workspaceId,
+    status: "DONE",
+    createdAt: {
+      $gte: thisMonthStart.toISOString(),
+      $lte: thisMonthEnd.toISOString(),
+    },
+  });
+
+  const lastMonthCompletedTasks = await Task.find({
+    workspaceId: workspaceId,
+    status: "DONE",
+    createdAt: {
+      $gte: lastMonthStart.toISOString(),
+      $lte: lastMonthEnd.toISOString(),
+    },
+  });
+
+  const completedTaskCount = thisMonthCompletedTasks.length;
+  const completedTaskDifference =
+    completedTaskCount - lastMonthCompletedTasks.length;
+
+  const thisMonthOverdueTasks = await Task.find({
+    workspaceId: workspaceId,
+    status: { $ne: "DONE" }, // Exclude tasks with status "DONE"
+    dueDate: { $lt: now.toISOString() }, // Tasks with dueDate earlier than the current time
+    createdAt: {
+      $gte: thisMonthStart.toISOString(),
+      $lte: thisMonthEnd.toISOString(),
+    },
+  });
+
+  const lastMonthOverdueTasks = await Task.find({
+    workspaceId: workspaceId,
+    status: { $ne: "DONE" }, // Exclude tasks with status "DONE"
+    dueDate: { $lt: now.toISOString() }, // Tasks with dueDate earlier than the current time
+    createdAt: {
+      $gte: lastMonthStart.toISOString(),
+      $lte: lastMonthEnd.toISOString(),
+    },
+  });
+
+  const overdueTaskCount = thisMonthOverdueTasks.length;
+  const overdueTaskDifference = overdueTaskCount - lastMonthOverdueTasks.length;
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      taskCount: taskCount,
+      taskDifference: taskDifference,
+      assignedTasksCount: assignedTaskCount,
+      assignedTasksDifference: assignedTaskDifference,
+      completedTaskCount: completedTaskCount,
+      completedTaskDifference: completedTaskDifference,
+      incompleteTaskCount: incompleteTaskCount,
+      incompleteTaskDifference: incompleteTaskDifference,
+      overdueTaskCount: overdueTaskCount,
+      overdueTaskDifference: overdueTaskDifference,
     },
   });
 });

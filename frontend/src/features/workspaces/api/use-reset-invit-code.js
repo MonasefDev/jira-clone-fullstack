@@ -18,7 +18,6 @@ export const useResetInviteCode = () => {
     },
 
     onSuccess: (data) => {
-      console.log("data", data);
       // Reset the form and redirect to the created workspace
       toast.success("Invite code reset successfully!");
       router.refresh();

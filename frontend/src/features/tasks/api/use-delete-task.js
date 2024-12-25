@@ -9,11 +9,11 @@ export const useDeleteTask = () => {
     mutationFn: async ({ param }) => {
       const response = await axiosInstance.delete(`/tasks/${param.taskId}`);
 
-      if (!response?.data?.success) {
-        throw new Error(response?.data?.message || "Failed to delete task");
+      if (!response?.data) {
+        throw new Error("Failed to delete task");
       }
 
-      return response.data.data; // Return the `data` field containing the deleted task info
+      return response.data; // Return the `data` field containing the deleted task info
     },
     onSuccess: (data) => {
       toast.success("Task deleted successfully");
@@ -22,8 +22,8 @@ export const useDeleteTask = () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       queryClient.invalidateQueries({ queryKey: ["tasks", data.id] });
     },
-    onError: (err) => {
-      toast.error(err.message); // Display error toast on failure
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "Failed to delete task"); // Display error toast on failure
     },
   });
 

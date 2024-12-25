@@ -17,7 +17,6 @@ export const useUpdateTask = () => {
       return response?.data?.task; // Return the `data` field containing updated task info
     },
     onSuccess: (data) => {
-      console.log("data", data);
       toast.success("Task updated successfully");
 
       // Refresh router and navigate to the task page

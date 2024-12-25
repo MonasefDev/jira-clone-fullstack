@@ -38,8 +38,6 @@ const MembersList = () => {
   const { mutate: updateMember, isPending: isUpdatingMember } =
     useUpdateMember();
 
-  console.log("members", members);
-
   const handleUpdateMember = (memberId, role) => {
     updateMember({
       param: { memberId },

@@ -42,7 +42,6 @@ export const columns = [
     },
     cell: ({ row }) => {
       const name = row.original.name;
-      console.log(row.original);
 
       return <p className="line-clamp-1">{name}</p>;
     },

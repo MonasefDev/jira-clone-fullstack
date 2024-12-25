@@ -38,6 +38,14 @@ const taskSchema = new mongoose.Schema({
   position: {
     type: Number,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 taskSchema.set("toJSON", {

@@ -18,6 +18,13 @@ router.route("/").post(createTask).get(getAllTasks);
 
 router.route("/:taskId").patch(updateTask).delete(deleteTask).get(getTask);
 
-router.patch("/bulk-update", updateBulkTasks);
+// router.patch(
+//   "/bulk-updates",
+//   (req, res, next) => {
+//     console.log("executed");
+//     next();
+//   },
+//   updateBulkTasks,
+// );
 
 export default router;

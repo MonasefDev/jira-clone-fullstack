@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/table";
 
 export function DataTable({ columns, data }) {
-  console.log("data : ", data);
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const table = useReactTable({

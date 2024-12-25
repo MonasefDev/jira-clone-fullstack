@@ -14,6 +14,7 @@ import { useTaskFilters } from "../hooks/use-task-filters";
 import { DataFilters } from "./DataFilters";
 import { DataTable } from "./DataTable";
 import { columns } from "./column";
+import DataKanban from "./DataKanban";
 
 export const TaskViewSwitcher = () => {
   const [{ status, assigneeId, projectId, dueDate, search }] = useTaskFilters();
@@ -34,11 +35,10 @@ export const TaskViewSwitcher = () => {
   const { open } = useCreateTaskModal();
 
   const onKanbanChange = useCallback(
-    (tasks) => {
+    (newTasks) => {
       bulkUpdate({
-        json: { tasks },
+        tasks: newTasks,
       });
-      console.log(tasks);
     },
     [bulkUpdate]
   );
@@ -80,8 +80,7 @@ export const TaskViewSwitcher = () => {
               <DataTable columns={columns} data={tasks || []} />
             </TabsContent>
             <TabsContent value="kanban" className="mt-0">
-              kanban
-              {/* <DataKanban data={tasks ?? []} onChange={onKanbanChange} /> */}
+              <DataKanban data={tasks ?? []} onChange={onKanbanChange} />
             </TabsContent>
             <TabsContent value="calender" className="mt-0  h-full pb-4">
               calendar
