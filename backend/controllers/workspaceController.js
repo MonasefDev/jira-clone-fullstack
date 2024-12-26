@@ -268,14 +268,9 @@ export const getWorkspaceAnalytics = catchAsync(async (req, res, next) => {
     userId: req.user.id,
   });
 
-  if (!member || member.role !== "ADMIN") {
-    return next(
-      new AppError("You are not authorized to update this workspace.", 404),
-    );
+  if (!member) {
+    return next(new AppError("You are not a member of this workspace.", 404));
   }
-
-  const tasks = await Task.find({ workspaceId: workspaceId });
-  console.log("Tasks", tasks);
 
   const now = new Date();
   const thisMonthStart = startOfMonth(now);

@@ -85,7 +85,17 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
-.react-datepicker-ignore-onclickoutside {
-  display: none !important;
-  height: 0 !important;
+
+
+.rdp-root {
+  padding: 1rem 2rem !important;
+}
+
+.rdp-selected .rdp-day_button {
+  border: 1px solid #2563eb !important;
+  color: #2563eb !important;
+}
+
+.rdp-toda {
+  color: #2563eb !important;
 }

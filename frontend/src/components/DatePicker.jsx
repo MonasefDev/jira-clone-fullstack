@@ -1,16 +1,12 @@
 "use client";
-import * as React from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
 import { Button } from "./ui/button";
-import { Calendar } from "./ui/calendar";
-// import { DayPicker } from "react-day-picker";
-// import "react-day-picker/dist/style.css";
-import DayPicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
 
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
@@ -21,6 +17,9 @@ export const DatePicker = ({
   placeholder = "Select date",
 }) => {
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+  React.useEffect(() => {
+    if (isPopoverOpen) setIsPopoverOpen(false);
+  }, [onChange]);
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
@@ -38,16 +37,7 @@ export const DatePicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <DayPicker value={value} onChange={onChange} />
-        {/* <Calendar
-          mode="single"
-          selected={value}
-          onSelect={(date) => {
-            onChange(date);
-            setIsPopoverOpen(false);
-          }}
-          initialFocus
-        /> */}
+        <DayPicker onDayClick={onChange} modifiers={{ selected: value }} />
       </PopoverContent>
     </Popover>
   );

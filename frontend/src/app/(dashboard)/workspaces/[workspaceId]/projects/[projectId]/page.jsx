@@ -1,15 +1,28 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
+import { useGetProjectById } from "@/features/projects/api/use-get-project";
+import { useGetProjectAnalytics } from "@/features/projects/api/use-get-project-analytics";
 import { ProjectAvatar } from "@/features/projects/components/ProjectAvatar";
-import { getProjectById } from "@/features/projects/queries";
 import { TaskViewSwitcher } from "@/features/tasks/components/TasksViewSwitcher";
+import { LoaderPage } from "@/components/LoaderPage";
+import { Analytics } from "@/components/Analytics";
+import { useParams } from "next/navigation";
 
-const ProjectIdPage = async ({ params }) => {
-  const { projectId } = await params;
+const ProjectIdPage = () => {
+  const { projectId } = useParams();
+  const { data: initialValues, isLoading: isInitialLoading } =
+    useGetProjectById({ projectId });
+  const { data: anaylics, isLoading: isAnalyticsLoading } =
+    useGetProjectAnalytics({ projectId });
+  const isLoading = isInitialLoading || isAnalyticsLoading;
 
-  const initialValues = await getProjectById({ projectId });
+  if (isLoading) {
+    return <LoaderPage />;
+  }
 
   if (!initialValues) {
     throw new Error("Project not found");
@@ -35,6 +48,7 @@ const ProjectIdPage = async ({ params }) => {
           </Button>
         </div>
       </div>
+      {anaylics ? <Analytics data={anaylics} /> : null}
       <TaskViewSwitcher hideProjectFilter={true} />
     </div>
   );

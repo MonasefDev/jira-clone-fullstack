@@ -1,3 +1,4 @@
+import { LoaderPage } from "@/components/LoaderPage";
 import { Navbar } from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import { CreateProjectModal } from "@/features/projects/components/CreateProjectModal";
@@ -8,7 +9,7 @@ import { Suspense } from "react";
 
 function DashboardLayout({ children }) {
   return (
-    <Suspense>
+    <Suspense fallback={<LoaderPage />}>
       <div className="min-h-screen">
         <CreateWorkspaceModal />
         <CreateProjectModal />

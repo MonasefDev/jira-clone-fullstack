@@ -42,8 +42,9 @@ const Projects = () => {
         <div className="text-neutral-500 py-1 px-2">No projects found</div>
       ) : (
         projects?.map((project) => {
-          const href = `/workspaces/${workspaceId}/projects/${project.id}`;
-          const isActive = pathname === href;
+          const href = `/workspaces/${workspaceId}/projects/${project.id}?projectId=${project.id}`;
+          const isActive =
+            pathname === `/workspaces/${workspaceId}/projects/${project.id}`;
 
           return (
             <Link href={href} key={project.id}>

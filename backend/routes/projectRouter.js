@@ -6,6 +6,7 @@ import {
   updateProject,
   deleteProject,
   getProjectById,
+  getProjectAnalytics,
 } from "../controllers/projectController.js";
 import upload from "../middleware/uploadMiddleware.js";
 
@@ -24,5 +25,7 @@ router
   .get(getProjectById)
   .patch(upload.single("image"), updateProject)
   .delete(deleteProject);
+
+router.route("/:projectId/analytics").get(getProjectAnalytics);
 
 export default router;

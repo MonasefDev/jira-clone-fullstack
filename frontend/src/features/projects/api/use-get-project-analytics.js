@@ -1,23 +1,23 @@
+import axiosInstance from "@/lib/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import axiosInstance from "@/lib/axiosInstance";
 
-export const useGetWorkspaceAnalytics = ({ workspaceId }) => {
+export const useGetProjectAnalytics = ({ projectId }) => {
   const query = useQuery({
-    queryKey: ["workspace-analytics", workspaceId],
+    queryKey: ["project-analytics", projectId],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/workspaces/${workspaceId}/analytics`
+        `/projects/${projectId}/analytics`
       );
 
       if (!response.data) {
-        throw new Error("Workspace analytics not found.");
+        throw new Error("Project analytics not found.");
       }
       return response?.data?.data;
     },
     onError: (error) => {
       toast.error(
-        error?.response?.data?.message || "Failed to get workspace analytics"
+        error?.response?.data?.message || "Failed to get project analytics"
       );
     },
   });
