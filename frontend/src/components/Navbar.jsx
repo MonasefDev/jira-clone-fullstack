@@ -1,4 +1,5 @@
 import { UserButton } from "@/features/auth/components/UserButton";
+import { MobileSidebar } from "./MobileSidebar";
 
 export function Navbar() {
   return (
@@ -6,12 +7,11 @@ export function Navbar() {
       <div className="flex-col hidden lg:flex">
         <h1 className="text-2xl font-semibold">Home</h1>
         <p className="text-muted-foreground">
-          {" "}
           Monitor all your projects and tasks
         </p>
       </div>
       <UserButton />
-      {/* <MobileSidebar /> */}
+      <MobileSidebar />
     </nav>
   );
 }

@@ -38,6 +38,14 @@ const taskSchema = new mongoose.Schema({
   position: {
     type: Number,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 taskSchema.set("toJSON", {
@@ -45,6 +53,7 @@ taskSchema.set("toJSON", {
     ret.id = ret._id; // Rename _id to id
     delete ret._id; // Remove _id field
     delete ret.__v; // Remove __v field
+    return ret;
   },
 });
 

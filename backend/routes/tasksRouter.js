@@ -16,8 +16,8 @@ router.use(protectMiddleware);
 
 router.route("/").post(createTask).get(getAllTasks);
 
-router.route("/:taskId").patch(updateTask).delete(deleteTask).get(getTask);
+router.route("/bulk-update").patch(updateBulkTasks);
 
-router.patch("/bulk-update", updateBulkTasks);
+router.route("/:taskId").patch(updateTask).delete(deleteTask).get(getTask);
 
 export default router;

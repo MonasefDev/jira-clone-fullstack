@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DottedSeparator } from "./DottedSeparator";
-import { Navigation } from "./Navigation";
 import { WorkspaceSwitcher } from "./WorkspaceSwitcher";
+import { Navigation } from "./Navigation";
+import Projects from "./Projects";
 
 function Sidebar() {
   return (
@@ -13,11 +14,11 @@ function Sidebar() {
         </Link>
       </div>
       <DottedSeparator className="my-4" />
-      {/* <WorkspaceSwitcher /> */}
+      <WorkspaceSwitcher />
       <DottedSeparator className="my-4" />
       <Navigation />
       <DottedSeparator className="my-4" />
-      {/* <Projects /> */}
+      <Projects />
     </aside>
   );
 }

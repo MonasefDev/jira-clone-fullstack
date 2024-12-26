@@ -1,21 +1,21 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import cors from "cors";
-import xss from "xss-clean";
-import morgan from "morgan";
-import rateLimit from "express-rate-limit";
-import cookieParser from "cookie-parser";
 import ExpressMongoSanitize from "express-mongo-sanitize";
+import rateLimit from "express-rate-limit";
+import morgan from "morgan";
+import xss from "xss-clean";
 import connectDB from "./config/db.js";
 
-import userRouter from "./routes/userRoutes.js";
-import workspaceRouter from "./routes/workspaceRoutes.js";
 import memberRouter from "./routes/memberRouter.js";
 import projectRouter from "./routes/projectRouter.js";
 import taskRouter from "./routes/tasksRouter.js";
+import userRouter from "./routes/userRoutes.js";
+import workspaceRouter from "./routes/workspaceRoutes.js";
 
-import AppError from "./utils/appError.js";
 import globalErrorHandler from "./controllers/errorController.js";
+import AppError from "./utils/appError.js";
 
 dotenv.config();
 
@@ -41,7 +41,7 @@ app.use(
 
 // Limit requests from same API
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 60 * 60 * 1000,
   message: "Too many requests from this IP, please try again in an hour!",
 });

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^17.0.0",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-avatar": "^1.1.2",
@@ -24,6 +25,7 @@
     "@radix-ui/react-select": "^2.1.4",
     "@radix-ui/react-separator": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.4",
     "@radix-ui/react-toggle": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.6",
@@ -33,6 +35,8 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
     "date-fns": "^4.1.0",
+    "date-picker": "^0.3.0",
+    "frontend2": "file:",
     "jose": "^5.9.6",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.468.0",
@@ -40,6 +44,8 @@
     "next-themes": "^0.4.4",
     "nuqs": "^2.2.3",
     "react": "^19.0.0",
+    "react-big-calendar": "^1.17.1",
+    "react-datepicker": "^7.5.0",
     "react-day-picker": "^9.4.4",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.1",
@@ -49,13 +55,14 @@
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.171.0",
     "vaul": "^1.1.2",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.0",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^15.1.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.16"
   }

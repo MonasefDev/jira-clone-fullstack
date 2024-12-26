@@ -2,33 +2,47 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import validator from "validator";
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please tell us your name!"],
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Please tell us your name!"],
+    },
+    email: {
+      type: String,
+      required: [true, "Please provide your email"],
+      unique: true,
+      lowercase: true,
+      validate: [validator.isEmail, "Please provide a valid email"],
+    },
+    password: {
+      type: String,
+      required: [true, "Please provide a password"],
+      minlength: 8,
+      select: false,
+    },
   },
-  email: {
-    type: String,
-    required: [true, "Please provide your email"],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, "Please provide a valid email"],
+  {
+    timestamps: true,
+    toJSON: {
+      transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+      },
+    },
   },
-  password: {
-    type: String,
-    required: [true, "Please provide a password"],
-    minlength: 8,
-    select: false,
-  },
-});
+);
 
-userSchema.set("toJSON", {
-  transform: (doc, ret) => {
-    ret.id = ret._id; // Rename _id to id
-    delete ret._id; // Remove _id field
-    delete ret.__v; // Remove __v field
-  },
-});
+// userSchema.set("toJSON", {
+//   transform: (doc, ret) => {
+//     ret.id = ret._id; // Rename _id to id
+//     delete ret._id; // Remove _id field
+//     delete ret.__v; // Remove __v field
+//     return ret;
+//   },
+// });
 
 userSchema.pre("save", async function (next) {
   // Only run this function if password was actually modified

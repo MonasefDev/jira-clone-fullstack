@@ -5,6 +5,9 @@ import {
   updateWorkspace,
   deleteWorkspace,
   resetInviteCodeWorkspace,
+  getWorkspace,
+  joinWorkspace,
+  getWorkspaceAnalytics,
 } from "../controllers/workspaceController.js";
 import upload from "../middleware/uploadMiddleware.js";
 import { protectMiddleware } from "../middleware/protectMiddleware.js";
@@ -20,9 +23,14 @@ router
   .post(upload.single("image"), createWorkspace);
 router
   .route("/:workspaceId")
+  .get(getWorkspace)
   .patch(upload.single("image"), updateWorkspace)
   .delete(deleteWorkspace);
 
-router.patch(":workspaceId/reset-invite-code", resetInviteCodeWorkspace);
+router.post("/:workspaceId/join", joinWorkspace);
+
+router.patch("/:workspaceId/reset-invite-code", resetInviteCodeWorkspace);
+
+router.get("/:workspaceId/analytics", getWorkspaceAnalytics);
 
 export default router;
