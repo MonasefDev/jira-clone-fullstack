@@ -35,19 +35,9 @@ const ProjectIdPage = async ({ params }) => {
           </Button>
         </div>
       </div>
-      <TaskViewSwitcher />
+      <TaskViewSwitcher hideProjectFilter={true} />
     </div>
   );
 };
 
 export default ProjectIdPage;
-
-// export async function generateMetadata({
-//   params,
-// }: ProjectIdPageProps): Promise<{ title: string, description: string }> {
-//   const { projectId } = params;
-//   return {
-//     title: `Project ${projectId}`,
-//     description: `Details and information about project ${projectId}.`,
-//   };
-// }

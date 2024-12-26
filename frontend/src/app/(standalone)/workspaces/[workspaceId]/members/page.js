@@ -1,10 +1,14 @@
+import { LoaderPage } from "@/components/LoaderPage";
 import MembersList from "@/features/members/components/MembersList";
+import { Suspense } from "react";
 
 function MembersPage() {
   return (
-    <div className="w-full lg:max-w-3xl">
-      <MembersList />
-    </div>
+    <Suspense fallback={<LoaderPage />}>
+      <div className="w-full lg:max-w-3xl">
+        <MembersList />
+      </div>
+    </Suspense>
   );
 }
 

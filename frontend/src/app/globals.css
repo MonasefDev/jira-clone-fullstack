@@ -85,3 +85,7 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+.react-datepicker-ignore-onclickoutside {
+  display: none !important;
+  height: 0 !important;
+}

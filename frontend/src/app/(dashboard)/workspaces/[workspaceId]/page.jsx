@@ -7,15 +7,13 @@ import { LoaderPage } from "@/components/LoaderPage";
 
 import { Analytics } from "@/components/Analytics";
 
+import { MemberList } from "@/components/MemberList";
+import { ProjectList } from "@/components/ProjectList";
+import { TaskList } from "@/components/TaskList";
 import { useGetMembers } from "@/features/members/api/use-get-members";
-import { MemberAvatar } from "@/features/members/components/MemberAvatar";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
-import { Settings } from "lucide-react";
 import { useGetWorkspaceAnalytics } from "@/features/workspaces/api/use-get-workspace-analytics";
-import { TaskList } from "@/components/TaskList";
-import { ProjectList } from "@/components/ProjectList";
-import { MemberList } from "@/components/MemberList";
 
 const WorkspaceIdPage = () => {
   const { workspaceId } = useParams();

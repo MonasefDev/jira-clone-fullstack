@@ -1,17 +1,16 @@
-import { EditWorkspaceForm } from "@/features/workspaces/components/EditWorkSpaceForm";
-import { getWorkspaceById } from "@/features/workspaces/queries";
-import { redirect } from "next/navigation";
+// import { EditWorkspaceForm } from "@/features/workspaces/components/EditWorkSpaceForm";
+// import { getWorkspaceById } from "@/features/workspaces/queries";
+// import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import ServerPage from "./ServerPage";
+import { LoaderPage } from "@/components/LoaderPage";
 
 const WorkspaceIdSettingPage = async ({ params }) => {
   const { workspaceId } = await params;
-
-  const workspace = await getWorkspaceById({ workspaceId });
-  if (!workspace) redirect(`workspaces/${workspaceId}`);
-
   return (
-    <div className="w-full lg:max-w-3xl">
-      <EditWorkspaceForm initialValues={workspace} />
-    </div>
+    <Suspense fallback={<LoaderPage />}>
+      <ServerPage workspaceId={workspaceId} />
+    </Suspense>
   );
 };
 

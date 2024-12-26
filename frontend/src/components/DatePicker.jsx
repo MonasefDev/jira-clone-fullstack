@@ -6,6 +6,12 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Calendar } from "./ui/calendar";
+// import { DayPicker } from "react-day-picker";
+// import "react-day-picker/dist/style.css";
+import DayPicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export const DatePicker = ({
@@ -14,8 +20,9 @@ export const DatePicker = ({
   className,
   placeholder = "Select date",
 }) => {
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -31,12 +38,16 @@ export const DatePicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar
+        <DayPicker value={value} onChange={onChange} />
+        {/* <Calendar
           mode="single"
           selected={value}
-          onSelect={(date) => onChange(date)}
+          onSelect={(date) => {
+            onChange(date);
+            setIsPopoverOpen(false);
+          }}
           initialFocus
-        />
+        /> */}
       </PopoverContent>
     </Popover>
   );
