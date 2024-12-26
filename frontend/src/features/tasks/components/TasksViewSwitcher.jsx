@@ -16,6 +16,7 @@ import { DataTable } from "./DataTable";
 import { columns } from "./column";
 import DataKanban from "./DataKanban";
 import { DataCalendar } from "./DataCalendar";
+import { LoaderPage } from "@/components/LoaderPage";
 
 export const TaskViewSwitcher = ({ hideProjectFilter = false }) => {
   const [{ status, assigneeId, projectId, dueDate, search }] = useTaskFilters();
@@ -43,6 +44,8 @@ export const TaskViewSwitcher = ({ hideProjectFilter = false }) => {
     },
     [bulkUpdate]
   );
+
+  if (isLoadingTasks) return <LoaderPage />;
 
   return (
     <Tabs

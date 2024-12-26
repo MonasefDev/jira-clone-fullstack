@@ -1,16 +1,19 @@
-// import { JoinWorkspaceForm } from "@/features/workspaces/components/JoinWorkspaceForm";
-import { JoinWorkspaceForm } from "@/features/workspaces/components/JoinWorkspaceForm";
-import { getWorkspaceById } from "@/features/workspaces/queries";
-import { redirect } from "next/navigation";
+"use client";
 
-const WorkspaceIdJoinPage = async ({ params }) => {
-  const { workspaceId } = await params;
-  const data = await getWorkspaceById({
+import { LoaderPage } from "@/components/LoaderPage";
+import { useGetWorkspaceById } from "@/features/workspaces/api/use-get-workspace-by-id";
+import { JoinWorkspaceForm } from "@/features/workspaces/components/JoinWorkspaceForm";
+import { useParams } from "next/navigation";
+
+const WorkspaceIdJoinPage = () => {
+  const { workspaceId } = useParams();
+  const { data: initialValues, isLoading } = useGetWorkspaceById({
     workspaceId,
   });
-  if (!data) redirect("/");
 
-  const initialValues = data;
+  if (isLoading) {
+    return <LoaderPage />;
+  }
 
   return (
     <div className="w-full lg:max-w-xl">

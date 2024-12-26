@@ -66,7 +66,6 @@ export const DataKanban = ({ data, onChange }) => {
         sourceStatus === destinationStatus &&
         source.index === destination.index
       ) {
-        console.log("Task dropped in the same position, no update needed");
         return;
       }
 

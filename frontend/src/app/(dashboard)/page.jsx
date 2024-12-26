@@ -1,17 +1,18 @@
-import axiosInstanceServer from "@/lib/axiosInstanceServer";
-import { HomeClient } from "./client";
-import { Suspense } from "react";
-import DashboardLoading from "./loading";
+"use client";
 
-export default async function Home() {
-  const response = await axiosInstanceServer.get("/workspaces");
-  const workspaces = response?.data?.workspaces || [];
+import { LoaderPage } from "@/components/LoaderPage";
+import { useGetWorkspaces } from "@/features/workspaces/api/use-get-workspaces";
+import { redirect } from "next/navigation";
 
-  if (!workspaces) throw new Error("Workspaces not found.");
+export default function Home() {
+  const { data: workspaces, isLoading } = useGetWorkspaces();
 
-  return (
-    <Suspense fallback={<DashboardLoading />}>
-      <HomeClient workspaces={workspaces} />
-    </Suspense>
-  );
+  if (isLoading) {
+    return <LoaderPage />;
+  }
+
+  if (workspaces?.length === 0) {
+    redirect("/workspaces/create");
+  }
+  redirect(`/workspaces/${workspaces[0].id}`);
 }

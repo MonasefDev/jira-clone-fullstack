@@ -14,8 +14,6 @@ export const useCreateTask = () => {
     onSuccess: (data) => {
       toast.success("Task created successfully");
 
-      console.log(data);
-
       // Invalidate React Query cache for tasks
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       queryClient.invalidateQueries({

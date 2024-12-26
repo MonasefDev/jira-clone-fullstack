@@ -1,16 +1,22 @@
-// import { EditWorkspaceForm } from "@/features/workspaces/components/EditWorkSpaceForm";
-// import { getWorkspaceById } from "@/features/workspaces/queries";
-// import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import ServerPage from "./ServerPage";
-import { LoaderPage } from "@/components/LoaderPage";
+"use client";
 
-const WorkspaceIdSettingPage = async ({ params }) => {
-  const { workspaceId } = await params;
+import { LoaderPage } from "@/components/LoaderPage";
+import { useGetWorkspaceById } from "@/features/workspaces/api/use-get-workspace-by-id";
+import { EditWorkspaceForm } from "@/features/workspaces/components/EditWorkSpaceForm";
+import { useParams } from "next/navigation";
+
+const WorkspaceIdSettingPage = () => {
+  const { workspaceId } = useParams();
+  const { data: workspace, isLoading } = useGetWorkspaceById({ workspaceId });
+
+  if (isLoading) {
+    return <LoaderPage />;
+  }
+
   return (
-    <Suspense fallback={<LoaderPage />}>
-      <ServerPage workspaceId={workspaceId} />
-    </Suspense>
+    <div className="w-full lg:max-w-3xl">
+      <EditWorkspaceForm initialValues={workspace} />
+    </div>
   );
 };
 

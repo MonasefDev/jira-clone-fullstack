@@ -37,10 +37,8 @@ export const getWorkspace = catchAsync(async (req, res, next) => {
     userId: req.user.id,
   });
 
-  if (!member || member.role !== "ADMIN") {
-    return next(
-      new AppError("You are not authorized to update this workspace.", 404),
-    );
+  if (!member) {
+    return next(new AppError("You are not a member of this workspace.", 404));
   }
 
   const workspace = await Workspace.findById(workspaceId);
@@ -135,9 +133,8 @@ export const updateWorkspace = catchAsync(async (req, res, next) => {
   const { workspaceId } = req.params;
   const { name, imageUrl } = req.body;
 
-  const existingWorkspace = await Workspace.findOne({
+  const existingWorkspace = await Workspace.findById({
     _id: workspaceId,
-    userId: req.user.id,
   });
 
   if (!existingWorkspace) {
@@ -182,9 +179,8 @@ export const updateWorkspace = catchAsync(async (req, res, next) => {
 export const deleteWorkspace = catchAsync(async (req, res, next) => {
   const { workspaceId } = req.params;
 
-  const existingWorkspace = await Workspace.findOne({
+  const existingWorkspace = await Workspace.findById({
     _id: workspaceId,
-    userId: req.user.id,
   });
 
   if (!existingWorkspace) {
@@ -204,7 +200,6 @@ export const deleteWorkspace = catchAsync(async (req, res, next) => {
 
   const deletedWorkspace = await Workspace.findOneAndDelete({
     _id: workspaceId,
-    userId: req.user.id,
   });
 
   if (!deletedWorkspace) {
@@ -213,20 +208,16 @@ export const deleteWorkspace = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      workspace: deletedWorkspace,
-    },
+    workspace: deletedWorkspace,
   });
 });
 
 export const resetInviteCodeWorkspace = catchAsync(async (req, res, next) => {
   const { workspaceId } = req.params;
 
-  const existingWorkspace = await Workspace.findOne({
+  const existingWorkspace = await Workspace.findById({
     _id: workspaceId,
-    userId: req.user.id,
   });
-
   if (!existingWorkspace) {
     return next(new AppError("Workspace not found or not authorized.", 404));
   }
@@ -243,7 +234,7 @@ export const resetInviteCodeWorkspace = catchAsync(async (req, res, next) => {
   }
 
   const updatedWorkspace = await Workspace.findOneAndUpdate(
-    { _id: workspaceId, userId: req.user.id },
+    { _id: workspaceId },
     { inviteCode: generateInviteCode(10) },
     { new: true },
   );

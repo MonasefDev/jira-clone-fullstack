@@ -15,14 +15,20 @@ export const useJoinWorkspace = () => {
         { inviteCode }
       );
 
-      return response.data;
+      if (!response.data) {
+        throw new Error("Failed to join workspace. Try again.");
+      }
+
+      return response?.data?.workspace;
     },
 
     onSuccess: (data) => {
       // Reset the form and redirect to the created workspace
       toast.success("Workspace joined successfully!");
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-      queryClient.invalidateQueries({ queryKey: ["workspaces", workspaceId] });
+      queryClient.invalidateQueries({
+        queryKey: ["workspaces", data?.workspace?.id],
+      });
     },
 
     onError: (error) => {

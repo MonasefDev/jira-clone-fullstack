@@ -5,6 +5,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/components/TanstackProvider";
+import AppLayout from "@/components/AppLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,8 @@ export default function RootLayout({ children }) {
       <NuqsAdapter>
         <QueryProvider>
           <body className={cn(inter.className, "min-h-screen antialiased")}>
-            {children}
+            {/* {children} */}
+            <AppLayout>{children}</AppLayout>
             <Toaster
               position="top-center"
               gutter={12}
