@@ -4,10 +4,10 @@ import { Suspense } from "react";
 
 export default function TasksPage() {
   return (
-    <Suspense fallback={<LoaderPage />}>
-      <div className="h-full flex flex-col">
-        <TaskViewSwitcher />
-      </div>
-    </Suspense>
+    <div className="h-full flex flex-col">
+      <Suspense fallback={<LoaderPage />}>
+        <TaskViewSwitcher />{" "}
+      </Suspense>
+    </div>
   );
 }

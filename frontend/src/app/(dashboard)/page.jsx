@@ -4,6 +4,8 @@ import { LoaderPage } from "@/components/LoaderPage";
 import { useGetWorkspaces } from "@/features/workspaces/api/use-get-workspaces";
 import { redirect } from "next/navigation";
 
+const DEFAULT_REDIRECT = "/workspaces/create";
+
 export default function Home() {
   const { data: workspaces, isLoading } = useGetWorkspaces();
 
@@ -11,8 +13,12 @@ export default function Home() {
     return <LoaderPage />;
   }
 
-  if (workspaces?.length === 0) {
-    redirect("/workspaces/create");
+  const hasWorkspaces = workspaces?.length > 0;
+
+  if (!hasWorkspaces) {
+    redirect(DEFAULT_REDIRECT);
   }
-  redirect(`/workspaces/${workspaces[0].id}`);
+
+  const firstWorkspaceId = workspaces[0].id;
+  redirect(`/workspaces/${firstWorkspaceId}`);
 }

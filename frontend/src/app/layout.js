@@ -20,8 +20,7 @@ export default function RootLayout({ children }) {
       <NuqsAdapter>
         <QueryProvider>
           <body className={cn(inter.className, "min-h-screen antialiased")}>
-            {/* {children} */}
-            <AppLayout>{children}</AppLayout>
+            {children}
             <Toaster
               position="top-center"
               gutter={12}

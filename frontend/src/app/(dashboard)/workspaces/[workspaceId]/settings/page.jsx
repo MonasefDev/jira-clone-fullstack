@@ -14,7 +14,7 @@ const WorkspaceIdSettingPage = () => {
   }
 
   return (
-    <div className="w-full lg:max-w-3xl">
+    <div className="w-full lg:max-w-3xl mx-auto">
       <EditWorkspaceForm initialValues={workspace} />
     </div>
   );
