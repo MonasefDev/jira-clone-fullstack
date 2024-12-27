@@ -16,6 +16,7 @@ import { DataTable } from "./DataTable";
 import { columns } from "./column";
 import DataKanban from "./DataKanban";
 import { DataCalendar } from "./DataCalendar";
+import { LoaderPage } from "@/components/LoaderPage";
 
 export const TaskViewSwitcher = ({ hideProjectFilter = false }) => {
   const [{ status, assigneeId, projectId, dueDate, search }] = useTaskFilters();
@@ -44,6 +45,11 @@ export const TaskViewSwitcher = ({ hideProjectFilter = false }) => {
     [bulkUpdate]
   );
 
+  if (isLoadingTasks) return <LoaderPage />;
+
+  // Ensure tasks is an array before rendering
+  const tasksData = Array.isArray(tasks) ? tasks : [];
+
   return (
     <Tabs
       defaultValue={view}
@@ -71,20 +77,20 @@ export const TaskViewSwitcher = ({ hideProjectFilter = false }) => {
         <DottedSeparator className="my-4" />
         <DataFilters hideProjectFilter={hideProjectFilter} />
         <DottedSeparator className="my-4" />
-        {isLoadingTasks ? (
+        {isBulkUpdating ? (
           <div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">
             <Loader className="size-6 text-muted-foreground animate-spin" />
           </div>
         ) : (
           <>
             <TabsContent value="table" className="mt-0">
-              <DataTable columns={columns} data={tasks || []} />
+              <DataTable columns={columns} data={tasksData} />
             </TabsContent>
             <TabsContent value="kanban" className="mt-0">
-              <DataKanban data={tasks ?? []} onChange={onKanbanChange} />
+              <DataKanban data={tasksData} onChange={onKanbanChange} />
             </TabsContent>
-            <TabsContent value="calender" className="mt-0  h-full pb-4">
-              <DataCalendar data={tasks ?? []} />
+            <TabsContent value="calender" className="mt-0 h-full pb-4">
+              <DataCalendar data={tasksData} />
             </TabsContent>
           </>
         )}

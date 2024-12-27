@@ -28,7 +28,7 @@ export const DataKanban = ({ data, onChange }) => {
 
     Object.keys(initialTasks).forEach((status) => {
       initialTasks[status].sort((a, b) => {
-        a.position - b.position;
+        return a.position - b.position;
       });
     });
     return initialTasks;
@@ -47,7 +47,9 @@ export const DataKanban = ({ data, onChange }) => {
     });
 
     Object.keys(newTasks).forEach((status) => {
-      newTasks[status].sort((a, b) => a.position - b.position);
+      newTasks[status].sort((a, b) => {
+        return a.position - b.position;
+      });
     });
 
     setTasks(newTasks);
@@ -66,7 +68,6 @@ export const DataKanban = ({ data, onChange }) => {
         sourceStatus === destinationStatus &&
         source.index === destination.index
       ) {
-        console.log("Task dropped in the same position, no update needed");
         return;
       }
 

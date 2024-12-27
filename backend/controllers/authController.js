@@ -40,8 +40,6 @@ const signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
   });
 
-  console.log("newUser", newUser);
-
   createSendToken(newUser, 201, res);
 });
 

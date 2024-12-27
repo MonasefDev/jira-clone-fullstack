@@ -217,8 +217,6 @@ export const createTask = catchAsync(async (req, res, next) => {
     .sort({ position: -1 }) // Sort by position in descending order
     .limit(1); // Limit to the highest position
 
-  console.log(highestPositionTask);
-
   const newPosition =
     highestPositionTask.length > 0
       ? highestPositionTask[0].position + 1000
@@ -325,8 +323,6 @@ export const updateTask = catchAsync(async (req, res, next) => {
 
 export const updateBulkTasks = catchAsync(async (req, res, next) => {
   const { tasks } = req.body;
-
-  // console.log(tasks);
 
   const tasksToUpdate = await Promise.all(
     tasks.map(async (task) => await Task.findById(task.id)),

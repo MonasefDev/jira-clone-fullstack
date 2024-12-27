@@ -20,7 +20,9 @@ export const useResetInviteCode = () => {
     onSuccess: (data) => {
       // Reset the form and redirect to the created workspace
       toast.success("Invite code reset successfully!");
-      router.refresh();
+      queryClient.invalidateQueries({
+        queryKey: ["workspace", data?.workspace?.id],
+      });
     },
 
     onError: (error) => {

@@ -87,9 +87,18 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }) => {
   const handleResetinviteCode = async () => {
     const ok = await confirmReset();
     if (!ok) return;
-    resetInviteCode({
-      param: { workspaceId: initialValues.id },
-    });
+    resetInviteCode(
+      {
+        param: { workspaceId: initialValues.id },
+      },
+      {
+        onSuccess: ({ data }) => {
+          setFullInviteLink(
+            `${window.location.origin}/workspaces/${initialValues.id}/join/${data?.workspace?.inviteCode}`
+          );
+        },
+      }
+    );
   };
 
   const handleDelete = async () => {

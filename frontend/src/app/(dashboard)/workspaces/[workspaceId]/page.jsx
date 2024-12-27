@@ -1,12 +1,9 @@
 "use client";
 
 import { useParams } from "next/navigation";
-
 import { ErrorPage } from "@/components/ErrorPage";
 import { LoaderPage } from "@/components/LoaderPage";
-
 import { Analytics } from "@/components/Analytics";
-
 import { MemberList } from "@/components/MemberList";
 import { ProjectList } from "@/components/ProjectList";
 import { TaskList } from "@/components/TaskList";
@@ -52,5 +49,4 @@ const WorkspaceIdPage = () => {
     </div>
   );
 };
-
 export default WorkspaceIdPage;

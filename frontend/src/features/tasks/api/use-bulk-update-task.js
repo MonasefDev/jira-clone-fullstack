@@ -11,8 +11,6 @@ export const useBulkUpdateTask = () => {
         tasks: data,
       });
 
-      console.log(response);
-
       if (!response?.data) {
         throw new Error("Failed to update tasks");
       }

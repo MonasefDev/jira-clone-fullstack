@@ -84,12 +84,9 @@ export const deleteMember = catchAsync(async (req, res, next) => {
 export const updateMemberRole = catchAsync(async (req, res, next) => {
   const { memberId } = req.params;
   const { role } = req.body;
-  console.log(memberId);
   const memberToUpdate = await Member.findById({
     _id: memberId,
   });
-
-  console.log(memberToUpdate);
 
   if (!memberToUpdate) {
     return next(new AppError("Member not found.", 404));

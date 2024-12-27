@@ -24,6 +24,7 @@ import { useConfirm } from "@/hooks/useConfirm";
 
 import { RoleType } from "../role-type";
 import { MemberSkeleton } from "./MemberSkyleton";
+import { LoaderPage } from "@/components/LoaderPage";
 
 const MembersList = () => {
   const [ConfirmDialog, confirm] = useConfirm(
@@ -58,6 +59,8 @@ const MembersList = () => {
       }
     );
   };
+
+  if (isLoading) return <LoaderPage />;
   return (
     <Card className="w-full h-full border-none shadow-none">
       <ConfirmDialog />
@@ -104,7 +107,7 @@ const MembersList = () => {
                   <DropdownMenuItem
                     className="font-medium"
                     onSelect={() =>
-                      handleUpdateMember(member.memberId, RoleType.ADMIN)
+                      handleUpdateMember(member.id, RoleType.ADMIN)
                     }
                     disabled={
                       member.role === RoleType.ADMIN || isUpdatingMember
@@ -115,20 +118,16 @@ const MembersList = () => {
                   <DropdownMenuItem
                     className="font-medium"
                     onSelect={() =>
-                      handleUpdateMember(member.memberId, RoleType.MEMBER)
+                      handleUpdateMember(member.id, RoleType.USER)
                     }
-                    disabled={
-                      member.role === RoleType.MEMBER || isUpdatingMember
-                    }
+                    disabled={member.role === RoleType.USER || isUpdatingMember}
                   >
                     Set as Member
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="font-medium text-amber-700"
                     onSelect={() => handleDeleteMember(member.memberId)}
-                    disabled={
-                      member.role === RoleType.MEMBER || isDeletingMember
-                    }
+                    disabled={isDeletingMember}
                   >
                     Remove {member.name}
                   </DropdownMenuItem>
