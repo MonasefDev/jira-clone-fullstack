@@ -6,6 +6,7 @@ import ExpressMongoSanitize from "express-mongo-sanitize";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
 import xss from "xss-clean";
+import compression from "compression";
 import connectDB from "./config/db.js";
 
 import memberRouter from "./routes/memberRouter.js";
@@ -52,17 +53,14 @@ app.use(express.urlencoded({ extended: true })); // Parses URL-encoded bodies
 app.use(cookieParser());
 
 app.use("/api", limiter);
-//!remove it
-app.use("/", (req, res, next) => {
-  console.log("new request made: ", req.method);
-  next();
-});
 
 // Data sanitization against NoSQL query injection
 app.use(ExpressMongoSanitize());
 
 // Data sanitization against XSS
 app.use(xss());
+
+app.use(compression());
 
 // Routes
 app.use("/api/v1/auth", userRouter);
@@ -79,6 +77,9 @@ app.all("*", (req, res, next) => {
 // Global error handler
 app.use(globalErrorHandler);
 
-app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
-});
+app.listen(
+  port,
+  // () => {
+  //   console.log(`App running on port ${port}...`);
+  // }
+);
