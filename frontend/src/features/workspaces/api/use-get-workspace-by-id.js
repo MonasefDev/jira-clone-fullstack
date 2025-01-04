@@ -3,7 +3,6 @@ import toast from "react-hot-toast";
 import axiosInstance from "@/lib/axiosInstance";
 
 export const useGetWorkspaceById = ({ workspaceId }) => {
-  console.log("query key :", workspaceId);
   const query = useQuery({
     queryKey: ["workspace", workspaceId],
     queryFn: async () => {

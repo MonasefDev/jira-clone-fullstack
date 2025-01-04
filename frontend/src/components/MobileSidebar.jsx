@@ -3,7 +3,7 @@ import { MenuIcon } from "lucide-react";
 
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import Sidebar from "./sidebar";
+import Sidebar from "./Sidebar";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
