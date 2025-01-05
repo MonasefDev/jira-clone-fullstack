@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import axiosInstance from "@/lib/axiosInstance";
+import { createWorkspace } from "./actions";
 
 export const useCreateWorkspace = () => {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -18,14 +17,8 @@ export const useCreateWorkspace = () => {
         }
       });
 
-      // Send the request to the backend
-      const response = await axiosInstance.post("/workspaces", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      return response.data;
+      // Call the server action
+      return await createWorkspace(formData);
     },
 
     onSuccess: (data) => {
@@ -37,10 +30,7 @@ export const useCreateWorkspace = () => {
     onError: (error) => {
       // Display error notification
       console.error(error);
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to create workspace. Try again."
-      );
+      toast.error(error.message || "Failed to create workspace. Try again.");
     },
   });
 

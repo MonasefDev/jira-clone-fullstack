@@ -1,7 +1,7 @@
+"use client";
+
 import { SignInCard } from "@/features/auth/components/SignInCard";
 
-function SingInPage() {
+export default function SignInPage() {
   return <SignInCard />;
 }
-
-export default SingInPage;
