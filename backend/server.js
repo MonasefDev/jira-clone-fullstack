@@ -31,13 +31,13 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Allow requests from your frontend
+// CORS configuration
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
-  }),
+  })
 );
 
 // Limit requests from same API
@@ -62,6 +62,11 @@ app.use(xss());
 
 app.use(compression());
 
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK", message: "Server is running" });
+});
+
 // Routes
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/workspaces", workspaceRouter);
@@ -77,9 +82,4 @@ app.all("*", (req, res, next) => {
 // Global error handler
 app.use(globalErrorHandler);
 
-app.listen(
-  port,
-  // () => {
-  //   console.log(`App running on port ${port}...`);
-  // }
-);
+app.listen(port);
