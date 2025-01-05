@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-function page() {
+export function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center">
       <h1 className="text-6xl font-bold text-gray-800 dark:text-gray-100">404</h1>
@@ -14,6 +14,4 @@ function page() {
       </Link>
     </div>
   );
-};
-
-export default page;
+}
